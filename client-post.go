@@ -15,7 +15,6 @@ func (p *Provider) postCloudDNSRecord(ctx context.Context, zone string, recordsT
 	if err := p.newService(ctx); err != nil {
 		return nil, err
 	}
-	zone = normalizeZone(zone);
 	gcdZone, err := p.getCloudDNSZone(zone)
 	if err != nil {
 		return nil, err
@@ -38,7 +37,7 @@ func (p *Provider) postCloudDNSRecord(ctx context.Context, zone string, recordsT
 			return nil, err
 		}
 		// Record exists and we'd really like to get this libdns.Record into the zone so how about we try patching it instead...
-		googleRecord, err = p.service.ResourceRecordSets.Patch(p.Project, gcdZone, normalizeHost(rrs.Name), rrs.Type, &rrs).Context(ctx).Do()
+		googleRecord, err = p.service.ResourceRecordSets.Patch(p.Project, gcdZone, rrs.Name, rrs.Type, &rrs).Context(ctx).Do()
 		if err != nil {
 			return nil, err
 		}
