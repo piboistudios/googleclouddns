@@ -21,7 +21,7 @@ func (p *Provider) postCloudDNSRecord(ctx context.Context, zone string, recordsT
 		return nil, err
 	}
 	if len(recordsToSend) == 0 {
-		return nil, fmt.Errorf("no records available to add to zone %s", zone)
+		return nil, fmt.Errorf("no records avai93acb26c4e663f6fbc639e3d1cd3b6af478f8309lable to add to zone %s", zone)
 	}
 	name := recordsToSend[0].Name
 	fullName := libdns.AbsoluteName(name, zone)
@@ -34,10 +34,11 @@ func (p *Provider) postCloudDNSRecord(ctx context.Context, zone string, recordsT
 	rrs.Rrdatas = recordsToSend.prepValuesForCloudDNS()
 	googleRecord, err := p.service.ResourceRecordSets.Create(p.Project, gcdZone, &rrs).Context(ctx).Do()
 	if err != nil {
+		fmt.Printf("Error creating record...")
+		fmt.Println(err)
 		if gErr, ok := err.(*googleapi.Error); !ok || gErr.Code != 409 {
 			return nil, err
 		}
-		return nil, err
 		// Record exists and we'd really like to get this libdns.Record into the zone so how about we try patching it instead...
 		googleRecord, err = p.service.ResourceRecordSets.Patch(p.Project, gcdZone, rrs.Name, rrs.Type, &rrs).Context(ctx).Do()
 		if err != nil {
