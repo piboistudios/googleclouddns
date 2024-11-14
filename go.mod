@@ -1,4 +1,4 @@
-module github.com/libdns/googleclouddns
+module github.com/piboistudios/googleclouddns
 
 go 1.15
 
