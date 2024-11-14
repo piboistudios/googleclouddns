@@ -87,3 +87,10 @@ func convertToLibDNS(googleRecord *dns.ResourceRecordSet, zone string) libdnsRec
 	}
 	return records
 }
+
+func normalizeZone(zone string) string {
+	if zone[len(zone)-1:len(zone)] === '.' {
+		return zone
+	}
+	return zone + "."
+}
