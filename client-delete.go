@@ -15,6 +15,7 @@ func (p *Provider) deleteCloudDNSRecord(ctx context.Context, zone, name, recordT
 	}
 
 	fullName := libdns.AbsoluteName(name, zone)
+	fullName = normalizeHost(fullName)
 	gcdZone, err := p.getCloudDNSZone(zone)
 	if err != nil {
 		return nil, err
